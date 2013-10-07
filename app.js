@@ -15,7 +15,7 @@ app.engine('html', swig.renderFile);
 
 // all environments
 app.set('port', config.get('port') || process.env.PORT || 3000);
-app.set('templates', __dirname + '/templates');
+app.set('views', __dirname + '/templates');
 app.set('view engine', 'html');
 app.use(express.favicon());
 app.use(express.logger('dev'));
