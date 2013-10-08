@@ -6,9 +6,9 @@
 module.exports = [
   {
     method: 'get',
-    options: '/users',
+    options: '/api/users',
     callback: function (req, res) {
-      res.send('respond with a resource');
+      res.send([{id: 1, name: 'respond with a resource'}]);
     }
   }
 ];

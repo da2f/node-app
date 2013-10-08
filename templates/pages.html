@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ title }} page{% endblock %}
+
+{% block head %}
+  {% parent %}
+{% endblock %}
+
+{% block content %}
+  <p>This is just an awesome {{ title }} page</p>
+  <ul>
+    {% for item in pages %}
+      <li><a href="{{ item.href }}">{{ item.title }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

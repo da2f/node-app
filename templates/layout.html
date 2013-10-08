@@ -8,13 +8,31 @@
     <link rel="shortcut icon" href="./ico/favicon.png">
     <title>{% block title %}Default page{% endblock %}</title>
     {% block head %}
-      <link rel="stylesheet" href="./less/default.css">
+      <link rel="stylesheet" href="/less/default.css">
     {% endblock %}
   </head>
   <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Node app</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Index</a></li>
+            <li><a href="/pages">Pages</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div class="container">
       <div class="page-header">
-        <h1>Default page</h1>
+        <h1>{% block title %}Default page{% endblock %}</h1>
       </div>
 
       {% block content %}{% endblock %}
