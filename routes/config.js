@@ -2,29 +2,21 @@ var fs = require('fs');
 var path = require('path');
 var util = require('util');
 
-function fn (dir, items, callback, o) {
-  if (!o) {
-    o = {
-      to: null,
-      success: function () {
-        callback(null, items);
-      }
-    };
-  }
+function fn (dir, items, o, callback) {
   dir = path.join(dir);
   fs.readdir(dir, function (err, files) {
     clearTimeout(o.to);
     if (err) {
-      return callback(err)
+      return callback(err);
     }
     files.forEach(function (file) {
       file = path.join(dir, file);
       fs.stat(file, function (err, stats) {
         if (err) {
-          return callback(err)
+          return callback(err);
         }
         stats.isFile() && items.push(file);
-        stats.isDirectory() && fn(file, items, callback, o);
+        stats.isDirectory() && fn(file, items, o, callback);
       })
     });
     o.to = setTimeout(o.success, 0);
@@ -32,13 +24,14 @@ function fn (dir, items, callback, o) {
 }
 
 function readdirext (dir, callback) {
-  fn(dir, [], callback);
+  var items = [];
+  fn(dir, items, {to: 0, success: function () {callback(null, items)}}, callback);
 }
 
 module.exports = function (app, callback) {
   readdirext(__dirname, function (err, files) {
     if (err) {
-      return callback(err)
+      return callback(err);
     }
 
     files.forEach(function (file) {
