@@ -27,7 +27,7 @@ app.use(require('./libs/response')(app, srv));
 app.use(app.router);
 app.use(require('less-middleware')({
   debug: 'development' == app.get('env'),
-  src: __dirname + '/public'
+  src: path.join(__dirname, '/public')
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
