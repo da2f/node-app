@@ -39,7 +39,9 @@ if ('development' == app.get('env')) {
   swig.setDefaults({cache: false});
 }
 
-require('./routes/config')(app);
+require('ex-route')(app, {
+    src: path.join(__dirname, '/routes')
+});
 
 require('http').createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
