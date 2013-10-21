@@ -1,7 +1,11 @@
 
 /*
- * GET users listing.
+ * GET pages.
  */
+
+var js = [
+  "/public/js/page.default.js"
+];
 
 module.exports = [
   {
@@ -27,7 +31,7 @@ module.exports = [
     method: 'get',
     options: '/pages/:id',
     callback: function (req, res) {
-      res.render('page', {title: 'Some'});
+      res.render('page', {title: 'Some', js: {namespace: 'page', files: js}});
     }
   }
 ];

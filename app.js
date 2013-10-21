@@ -8,7 +8,6 @@ var path = require('path');
 var swig = require('swig');
 
 var app = express();
-var srv = require('http').createServer(app);
 var config = require('./config');
 
 app.engine('html', swig.renderFile);
@@ -21,15 +20,15 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
+app.use(express.cookieParser('my-secret-key'));
 app.use(express.session());
-app.use(require('./libs/response')(app, srv));
-app.use(app.router);
+app.use(require('./libs/bundle-middleware')(app));
 app.use(require('less-middleware')({
   debug: 'development' == app.get('env'),
   src: path.join(__dirname, '/public')
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(app.router);
 
 // development only
 if ('development' == app.get('env')) {
