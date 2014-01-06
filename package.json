@@ -11,7 +11,16 @@
     "less-middleware": "*",
     "ex-route": "*",
     "underscore": "*",
+    "async": "*",
     "nconf": "*",
     "piler": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "supertest": "*"
+  },
+  "scripts": {
+    "start": "node app.js"
   }
 }
