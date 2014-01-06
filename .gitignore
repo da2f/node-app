@@ -2,3 +2,6 @@
 /node_modules
 /.idea
 /public/less/default.css
+
+/public/tpl.js
+/public/vendor/js/swig.js
