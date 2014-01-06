@@ -13,7 +13,8 @@ var config = require('./config');
 app.engine('html', swig.renderFile);
 
 // all environments
-app.set('port', config.get('port') || process.env.PORT || 3000);
+app.set('port', process.env.PORT || config.get('port') || 3000);
+app.set('env', process.env.ENV_MODE || config.get('env_mode') || 'development');
 app.set('views', __dirname + '/templates');
 app.set('view engine', 'html');
 app.use(express.favicon());
@@ -22,12 +23,17 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('my-secret-key'));
 app.use(express.session());
-app.use(require('./libs/bundle-middleware')(app));
+app.use(require('./libs/render-middleware')(app, {
+    tplsrc: path.join(__dirname, '/templates'),
+    tplfilename: path.join(__dirname, '/public/', 'tpl.js'),
+    tplnamespace: 'swigTpl'
+}));
 app.use(require('less-middleware')({
   debug: 'development' == app.get('env'),
   src: path.join(__dirname, '/public')
 }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(app.router);
 
 // development only
@@ -38,6 +44,12 @@ if ('development' == app.get('env')) {
   swig.setDefaults({cache: false});
 }
 
+swig.setDefaults({
+    autoescape: false,
+    locals: {DEV_MODE: app.get('env') === 'development'}
+});
+require('./libs/swig')(swig);
+
 require('ex-route')(app, {
   src: path.join(__dirname, '/routes')
 });
@@ -45,3 +57,5 @@ require('ex-route')(app, {
 require('http').createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+module.exports = app;
