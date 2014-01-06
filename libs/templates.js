@@ -6,8 +6,10 @@ var swig = require('swig');
 var child_process = require('child_process');
 
 var app,
-    options = {
-        src: ''
+    defaultOptions = {
+        tplsrc: null,
+        tplnamespace: 'window',
+        tplfilename: 'tpl.js'
     },
     tpl = null;
 
@@ -66,7 +68,7 @@ function getWebPath (ospath) {
 
 module.exports = function (/* args */) {
     app = arguments.length > 0 ? arguments[0] : app;
-    options = arguments.length > 1 ? _.extend(options, arguments[1] || {}) : options;
+    options = arguments.length > 1 ? _.extend({}, defaultOptions, arguments[1] || {}) : defaultOptions;
 
     return function (opts, callback) {
         opts = opts && typeof opts === 'object' ? opts : {};
@@ -83,20 +85,18 @@ module.exports = function (/* args */) {
                         if (err) {
                             return __callback__(err);
                         }
-                        var jsfile = [],
-                            namespace = options && options.tplnamespace || 'window',
-                            filename = options && options.tplfilename || 'tpl.js';
-                        if (options && options.tplnamespace) {
+                        var jsfile = [];
+                        if (options.tplnamespace !== defaultOptions.tplnamespace) {
                             jsfile.push('window["' + options.tplnamespace + '"]={};')
                         }
                         for (var ind = 0, len = files.length; ind < len; ind++) {
-                            jsfile.push(namespace + '["' + files[ind].name + '"]=' + files[ind].tpl);
+                            jsfile.push(options.tplnamespace + '["' + files[ind].name + '"]=' + files[ind].tpl);
                         }
-                        fs.writeFile(filename, jsfile.join('\n'), {flag: 'w'}, function (err) {
+                        fs.writeFile(options.tplfilename, jsfile.join('\n'), {flag: 'w'}, function (err) {
                             if (err) {
                                 return __callback__(err);
                             }
-                            tpl = '<script src="' + getWebPath(filename) + '"></script>';
+                            tpl = '<script src="' + getWebPath(options.tplfilename) + '"></script>';
                             __callback__(null, _.extend(opts, {
                                 tpl: tpl || ''
                             }));
