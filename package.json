@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "/node_modules/.bin/mocha --timeout 5000 --reporter spec test/*.test.js",
+    "test_win": ".\\node_modules\\.bin\\mocha.cmd --timeout 5000 --reporter spec test\\*.test.js"
   },
   "dependencies": {
     "express": "3.4.0",
@@ -16,11 +18,8 @@
     "piler": "*"
   },
   "devDependencies": {
-    "mocha": "*",
-    "should": "*",
-    "supertest": "*"
-  },
-  "scripts": {
-    "start": "node app.js"
+    "mocha": "1.*.*",
+    "chai": "1.*.*",
+    "supertest": "0.*.*"
   }
 }
